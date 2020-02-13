@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://203.195.246.146:3306/JapaneseTest?useunicode=true&characterEncoding=utf8
+    username: root
+    password: RagTimeANDOverTrue

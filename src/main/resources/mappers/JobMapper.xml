@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaof.learn.lesson.mapper.JobMapper" >
+  <resultMap id="BaseResultMap" type="com.xiaof.learn.lesson.entity.Job" >
+    <constructor >
+      <idArg column="job_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <idArg column="part_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="mach_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="time" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="is_urgent" jdbcType="BIT" javaType="java.lang.Boolean" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    job_num, part_num, mach_num, time, is_urgent
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xiaof.learn.lesson.entity.JobExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from job
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.xiaof.learn.lesson.entity.JobKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from job
+    where job_num = #{jobNum,jdbcType=INTEGER}
+      and part_num = #{partNum,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.xiaof.learn.lesson.entity.JobKey" >
+    delete from job
+    where job_num = #{jobNum,jdbcType=INTEGER}
+      and part_num = #{partNum,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xiaof.learn.lesson.entity.JobExample" >
+    delete from job
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xiaof.learn.lesson.entity.Job" >
+    insert into job (job_num, part_num, mach_num, 
+      time, is_urgent)
+    values (#{jobNum,jdbcType=INTEGER}, #{partNum,jdbcType=INTEGER}, #{machNum,jdbcType=INTEGER}, 
+      #{time,jdbcType=INTEGER}, #{isUrgent,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xiaof.learn.lesson.entity.Job" >
+    insert into job
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="jobNum != null" >
+        job_num,
+      </if>
+      <if test="partNum != null" >
+        part_num,
+      </if>
+      <if test="machNum != null" >
+        mach_num,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="isUrgent != null" >
+        is_urgent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="jobNum != null" >
+        #{jobNum,jdbcType=INTEGER},
+      </if>
+      <if test="partNum != null" >
+        #{partNum,jdbcType=INTEGER},
+      </if>
+      <if test="machNum != null" >
+        #{machNum,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=INTEGER},
+      </if>
+      <if test="isUrgent != null" >
+        #{isUrgent,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xiaof.learn.lesson.entity.JobExample" resultType="java.lang.Integer" >
+    select count(*) from job
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update job
+    <set >
+      <if test="record.jobNum != null" >
+        job_num = #{record.jobNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.partNum != null" >
+        part_num = #{record.partNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.machNum != null" >
+        mach_num = #{record.machNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=INTEGER},
+      </if>
+      <if test="record.isUrgent != null" >
+        is_urgent = #{record.isUrgent,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update job
+    set job_num = #{record.jobNum,jdbcType=INTEGER},
+      part_num = #{record.partNum,jdbcType=INTEGER},
+      mach_num = #{record.machNum,jdbcType=INTEGER},
+      time = #{record.time,jdbcType=INTEGER},
+      is_urgent = #{record.isUrgent,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xiaof.learn.lesson.entity.Job" >
+    update job
+    <set >
+      <if test="machNum != null" >
+        mach_num = #{machNum,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=INTEGER},
+      </if>
+      <if test="isUrgent != null" >
+        is_urgent = #{isUrgent,jdbcType=BIT},
+      </if>
+    </set>
+    where job_num = #{jobNum,jdbcType=INTEGER}
+      and part_num = #{partNum,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xiaof.learn.lesson.entity.Job" >
+    update job
+    set mach_num = #{machNum,jdbcType=INTEGER},
+      time = #{time,jdbcType=INTEGER},
+      is_urgent = #{isUrgent,jdbcType=BIT}
+    where job_num = #{jobNum,jdbcType=INTEGER}
+      and part_num = #{partNum,jdbcType=INTEGER}
+  </update>
+</mapper>
