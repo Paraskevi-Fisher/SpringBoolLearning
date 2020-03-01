@@ -23,6 +23,7 @@ class JobDaoTest {
     @Test
     void selectByJobNum() {
         List<Job> result = jobDao.selectByJobNum(0);
+        System.out.println(result);
         Assert.assertEquals(3, result.size());
     }
 }
